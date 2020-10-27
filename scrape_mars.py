@@ -26,8 +26,10 @@ def scrape():
     browser.visit(jpl_url)
     image_html = browser.html
     image_bs = bs(image_html, 'html.parser')
-    featured_images = image_bs.find('article', class_='carousel_item')['style']
+    featured_image_url = image_bs.find('article', class_='carousel_item')['style']
+    featured_images = re.findall(r"'(.*?)'",featured_image_url)
     featured_image_url = 'https://www.jpl.nasa.gov' + featured_images
+    
 
 
 #Scraping Space Facts for Mars data table
