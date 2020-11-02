@@ -33,7 +33,7 @@ def scrape():
     image_html = browser.html
     image_bs = bs(image_html, 'html.parser')
     feature_image = image_bs.find(id="images")
-    img_src = feature_image.find("img")["src"]
+    img_src = feature_image.find(class_ = "button fancybox")["data-fancybox-href"]
     featured_image_url = jplbase + img_src
 
     mars_data['featured_image_url'] = featured_image_url
@@ -54,7 +54,7 @@ def scrape():
 #Connect to Mars hemisphere website 
     mars_hemisphere = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
     browser.visit(mars_hemisphere)
-    
+    urlbase = 'https://astrogeology.usgs.gov/'
     mars_hemisphere_html = browser.html
     mars_hemisphere_bs = bs(mars_hemisphere_html, 'html.parser')
     mars_hemisphere = mars_hemisphere_bs.find_all('img', class_ ='thumb')
@@ -63,7 +63,8 @@ def scrape():
 
     for hemisphere in mars_hemisphere:
         image_title = hemisphere.attrs['alt'].replace('Enhanced thumbnail','')
-        image_url = hemisphere.attrs['src']
+        image_src = hemisphere.attrs['src']
+        image_url = urlbase + image_src 
         mars_hemisphere_image_urls.append({'Title':image_title,'Image URl':image_url})
 
     mars_hemisphere_image_urls
