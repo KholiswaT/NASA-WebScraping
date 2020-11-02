@@ -10,7 +10,8 @@ def init_browser():
 
 def scrape():
     browser = init_browser()
-    mars = {}
+
+    mars_data = {}
 
 #Mars News Scrape
     url = 'https://mars.nasa.gov/news/'
@@ -18,19 +19,24 @@ def scrape():
     html = browser.html
     soup = bs(html, "html.parser")
 
-    news_title = soup.find_all('div', class_='content_title')[1].text
-    title_text = soup.find_all('div', class_='article_teaser_body')[0].text
+    news_title = soup.find('li', class_ = "slide").find('div', class_='content_title').text
+    title_text = soup.find('li', class_ = "slide").find('div', class_='article_teaser_body').text
+
+    mars_data['news_title'] = news_title
+    mars_data['title_text'] = title_text
 
 #Mars Featured Image Scrape
     jpl_url = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
+    jplbase = 'https://www.jpl.nasa.gov'
     browser.visit(jpl_url)
+    browser.is_element_present_by_id("images", 1)
     image_html = browser.html
     image_bs = bs(image_html, 'html.parser')
-    featured_image_url = image_bs.find('article', class_='carousel_item')['style']
-    featured_images = re.findall(r"'(.*?)'",featured_image_url)
-    featured_image_url = 'https://www.jpl.nasa.gov' + featured_images
-    
+    feature_image = image_bs.find(id="images")
+    img_src = feature_image.find("img")["src"]
+    featured_image_url = jplbase + img_src
 
+    mars_data['featured_image_url'] = featured_image_url
 
 #Scraping Space Facts for Mars data table
     space_facts = 'https://space-facts.com/mars/'
@@ -43,6 +49,8 @@ def scrape():
     mars_df = mars_df.set_index(['Description'])
     mars_html = mars_df.to_html()
     
+    mars_data['mars_html'] = mars_html
+
 #Connect to Mars hemisphere website 
     mars_hemisphere = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
     browser.visit(mars_hemisphere)
@@ -60,4 +68,11 @@ def scrape():
 
     mars_hemisphere_image_urls
 
-    return mars
+    mars_data['mars_hemisphere_image_urls'] = mars_hemisphere_image_urls
+    mars_data['image_url'] = image_url
+
+
+   
+    browser.quit()
+
+    return mars_data
