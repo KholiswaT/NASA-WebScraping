@@ -112,9 +112,9 @@
    {% for hemisphere in mars_hemisphere %}
     <div class="col-md-6">
       <div class="card text-center">
-        <img class="card-img-top" src="{{ mars_hemisphere_image.image_url }}" style="max-width:100%; max-height: auto;">
+        <img class="card-img-top" src="{{mars.image_url}}" style="max-width:100%; max-height: auto;">
         <div class="card-body">
-          <h4 class="card-title">{{mars_hemisphere_image.title}}</h4>
+          <h4 class="card-title">{{mars.mars_hemisphere_image_urls}}</h4>
         </div>
       </div>
     </div>
@@ -122,6 +122,5 @@
   </div>
 </div>
 </body>
-  
 
 </html>
