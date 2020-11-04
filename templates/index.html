@@ -13,7 +13,7 @@
 
 <body>
   <div clas="container">
-    <div class="jumbotron text-center" style="background-size: 100%; height: 100%; background-image: url('https://asc-csa.gc.ca/images/astronomie/mars/mars-2020-cratere-ban.jpg')">
+    <div class="jumbotron text-center" style="  background-size: 100%; height: 100%; background-image: url('https://asc-csa.gc.ca/images/astronomie/mars/mars-2020-cratere-ban.jpg')">
           <h1>Mission to Mars</h1>
            <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
            <hr class = "my-4">
@@ -24,8 +24,8 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12">
-        <h1>Latest Mars News</h1>
-        <h4>{{mars.news_title}}</h4>
+        <h1 style = "text-decoration: underline">Latest Mars News</h1>
+        <h4 style = "padding-top: 20px;">{{mars.news_title}}</h4>
         <p>{{mars.title_text}}</p>
       </div>
     </div>
@@ -35,11 +35,11 @@
 <div class="container padding">
   <div class="row padding">
     <div class="col-md-8">
-    <h3> Mars Featured Image</h3>
-    <img src="{{mars.featured_image_url}}" class="img-thumbnail" style="max-width:100%; max-height: auto;">
+    <h3 style = "text-decoration: underline"> Mars Featured Image</h3>
+    <img src="{{mars.featured_image_url}}" class="img-thumbnail" style="max-width:100%; max-height: auto; text-decoration: underline">
     </div>
   <div class="col-md-4">
-          <h3> Mars Parameters</h3>
+          <h3 style = "text-decoration: underline"> Mars Parameters</h3>
           <table border = "1", class = "dataframe">
               <thead>    
                   <tr style="text-align: right;">      
@@ -98,19 +98,19 @@
 <div class="container-fluid padding">
   <div class="row welcome text-center">
     <div class="col-12">
-      <h2>Mars Hemispheres</h2>
+      <h2 style = "padding-top: 50px;text-decoration: underline">Mars Hemispheres</h2>
     </div>
   </div>
 </div>
 
 <div class="container-fluid padding">
   <div class="row padding">
-   {% for hemisphere in mars_hemisphere %}
-    <div class="col-md-6">
+   {% for hemisphere in mars.mars_hemisphere_image_urls %}
+    <div class="col-md-3">
       <div class="card text-center">
-        <img class="card-img-top" src="{{mars.image_url}}" style="max-width:100%; max-height: auto;">
+        <img class="card-img-top" src="{{hemisphere.Image_URl}}" alt = "" style = "width: 100%; height: 100%;">
         <div class="card-body">
-          <h4 class="card-title">{{mars.image_title}}</h4>
+          <h4 class="card-title" style= "text-align: center; text-decoration: underline; font-size:large;">{{hemisphere.Title}}</h4>
         </div>
       </div>
     </div>
@@ -120,3 +120,5 @@
 </body>
 
 </html>
+
+<!--| default('static/images/error.png', true)>

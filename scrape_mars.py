@@ -2,6 +2,8 @@ from splinter import Browser
 from bs4 import BeautifulSoup as bs
 import re
 import pandas as pd
+from time import sleep
+
 
 def init_browser():
     executable_path = {"executable_path": "/usr/local/bin/chromedriver"}
@@ -19,11 +21,22 @@ def scrape():
     html = browser.html
     soup = bs(html, "html.parser")
 
-    news_title = soup.find('li', class_ = "slide").find('div', class_='content_title').text
-    title_text = soup.find('li', class_ = "slide").find('div', class_='article_teaser_body').text
+    try:
+        news_title = soup.find('li', class_ = "slide").find('div', class_='content_title').text
+        title_text = soup.find('li', class_ = "slide").find('div', class_='article_teaser_body').text
 
-    mars_data['news_title'] = news_title
-    mars_data['title_text'] = title_text
+        mars_data['news_title'] = news_title
+        mars_data['title_text'] = title_text
+
+    except:
+        sleep(1)
+        browser.reload()
+
+        news_title = soup.find('div', class_='content_title').text
+        title_text = soup.find('div', class_='article_teaser_body').text
+
+        mars_data['news_title'] = news_title
+        mars_data['title_text'] = title_text
 
 #Mars Featured Image Scrape
     jpl_url = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
@@ -65,15 +78,13 @@ def scrape():
         image_title = hemisphere.attrs['alt'].replace('Enhanced thumbnail','')
         image_src = hemisphere.attrs['src']
         image_url = urlbase + image_src 
-        mars_hemisphere_image_urls.append({'Title':image_title,'Image URl':image_url})
+        mars_hemisphere_image_urls.append({'Title':image_title,'Image_URl':image_url})
 
     mars_hemisphere_image_urls
 
     mars_data['mars_hemisphere_image_urls'] = mars_hemisphere_image_urls
-    mars_data['image_url'] = image_url
+    
 
-
-   
     browser.quit()
 
     return mars_data
